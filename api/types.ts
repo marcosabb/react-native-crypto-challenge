@@ -10,3 +10,13 @@ export type UsersResponse = {
     algorithm: string;
   };
 };
+
+export type User =   {
+  row_number: number;
+  id: number;
+  nome: string;
+  email: string;
+  telefone: number;
+}
+
+export type Users = User[];
