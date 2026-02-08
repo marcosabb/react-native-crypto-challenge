@@ -1,8 +1,9 @@
 import { UserCard } from "@/components/user-card";
+import { UsersListSkeleton } from "@/components/users-list-skeleton";
 import { useGetUsers } from "@/queries/users.queries";
 import { useCallback } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
-import { ActivityIndicator, Appbar, Button, Text } from "react-native-paper";
+import { Appbar, Button, Text } from "react-native-paper";
 
 export default function Dashboard() {
   const { data: users = [], isLoading, isFetching, isError, refetch } = useGetUsers();
@@ -17,12 +18,8 @@ export default function Dashboard() {
         <Appbar.Content title="Users" />
         <Appbar.Action icon="refresh" onPress={refetch} />
       </Appbar.Header>
-
-      {isLoading && (
-        <View style={styles.content}>
-          <ActivityIndicator />
-        </View>
-      )}
+      
+      {isLoading && <UsersListSkeleton />}
 
       {!isLoading && users.length === 0 && (
         <View style={styles.content}>
