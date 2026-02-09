@@ -25,6 +25,24 @@ export default function Dashboard() {
 		[router],
 	);
 
+	const keyExtractor = useCallback((item: User) => item.id.toString(), []);
+
+	const renderItem = useCallback(
+		({ item }: { item: User }) => (
+			<UserCard user={item} onPress={handleUserCardPress} />
+		),
+		[handleUserCardPress],
+	);
+
+	const getItemLayout = useCallback(
+		(_: ArrayLike<User> | null | undefined, index: number) => ({
+			length: 64,
+			offset: 64 * index,
+			index,
+		}),
+		[],
+	);
+
 	return (
 		<View style={styles.container}>
 			<Appbar.Header>
@@ -52,12 +70,14 @@ export default function Dashboard() {
 			{!isLoading && !isError && users.length > 0 && (
 				<FlatList
 					data={users}
-					keyExtractor={(user) => user.id.toString()}
-					renderItem={({ item }) => (
-						<UserCard user={item} onPress={handleUserCardPress} />
-					)}
+					keyExtractor={keyExtractor}
+					renderItem={renderItem}
+					getItemLayout={getItemLayout}
 					refreshing={isFetching}
 					onRefresh={refetch}
+					removeClippedSubviews={true}
+					maxToRenderPerBatch={10}
+					initialNumToRender={10}
 				/>
 			)}
 		</View>
